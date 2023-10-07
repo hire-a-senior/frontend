@@ -1,0 +1,69 @@
+import axios from 'axios'
+import { getFromLocalStorage, saveToLocalStorage } from './LocalStorageHandler'
+import { toast } from 'react-toastify'
+
+const axiosInstance = axios.create({
+  baseURL: process.env.NEXT_PUBLIC_BACKEND_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+axiosInstance.interceptors.request.use(
+  (config) => {
+    const token = getFromLocalStorage('accessToken')
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token
+    }
+    return config
+  },
+  (error) => {
+    Promise.reject(error)
+  }
+)
+
+axiosInstance.interceptors.response.use(
+  (response) => {
+    console.log('response', response)
+    if (response?.data?.success === false && response?.data?.message) {
+      toast.error(response?.data?.message)
+    } else if (response?.data?.success === true && response?.data?.message) {
+      toast.success(response?.data?.message)
+    }
+    return response
+  },
+  (error) => {
+    const originalRequest = error.config
+    // Prevent infinite loops.
+    if (
+      error.response.status === 401 &&
+      originalRequest.url === '/api/v1/auth/refresh-token'
+    ) {
+      window.location.href = '/auth/login'
+      return Promise.reject(error)
+    }
+
+    // Access token may be expired, try to get a new one and retry the request.
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+      const refreshToken = getFromLocalStorage('refreshToken')
+      return axios
+        .post(
+          process.env.NEXT_PUBLIC_BACKEND_URL + '/api/v1/auth/refresh-token',
+          {
+            refreshToken: refreshToken,
+          }
+        )
+        .then((res) => {
+          saveToLocalStorage('accessToken', res.data.data.accessToken)
+          saveToLocalStorage('refreshToken', res.data.data.refreshToken)
+          axiosInstance.defaults.headers.common['Authorization'] =
+            'Bearer ' + res.data.data.accessToken
+          return axiosInstance(originalRequest)
+        })
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default axiosInstance

@@ -1,9 +1,26 @@
+import TextLogo from '@/components/TextLogo'
+import Link from 'next/link'
+
 export default function Home() {
   return (
-    <main className="h-screen w-screen bg-purple-darkest">
-      <div className="flex justify-center items-center h-full">
-        <h1 className="text-white text-4xl">Hire a Senior</h1>
+    <main className="h-screen w-screen">
+      <div className="flex justify-center items-center p-4">
+        <TextLogo />
+      </div>
+      <div className="flex justify-center items-center">
+        <Link
+          href={'/auth/register'}
+          className="text-xl text-center font-bold text-black m-2"
+        >
+          Register
+        </Link>
+        <Link
+          href={'/auth/login'}
+          className="text-xl text-center font-bold text-black m-2"
+        >
+          Login
+        </Link>
       </div>
     </main>
-  );
+  )
 }
