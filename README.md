@@ -7,6 +7,7 @@
 3. Run in the development mode: `npm run dev`
 
 ## Development
+
 1. Fork the project. While forking, disable "Copy only main branch" option.
 2. Ensure that you configured your ssh keys with github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
 3. Download the forked project with ssh option.

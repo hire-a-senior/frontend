@@ -1,10 +1,13 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Formik } from 'formik'
 import InputText from './form/InputText'
 import PrimaryButton from './PrimaryButton'
 import Link from 'next/link'
-import { saveToLocalStorage } from '@/lib/LocalStorageHandler'
+import {
+  getFromLocalStorage,
+  saveToLocalStorage,
+} from '@/lib/LocalStorageHandler'
 import { useRouter } from 'next/navigation'
 import axiosInstance from '@/lib/AxiosInstance'
 
@@ -14,11 +17,17 @@ interface LoginFormValues {
 }
 
 const LoginForm = () => {
-  const { push } = useRouter()
+  const router = useRouter()
   const initialValues: LoginFormValues = {
     email: '',
     password: '',
   }
+
+  useEffect(() => {
+    if (getFromLocalStorage('accessToken') !== null) {
+      router.push('/home')
+    }
+  }, [router])
 
   return (
     <div className="flex justify-center items-center my-10">
@@ -41,7 +50,7 @@ const LoginForm = () => {
                     'refreshToken',
                     res?.data?.data?.refreshToken
                   )
-                  push('/home')
+                  router.push('/home')
                 }
               })
           }}

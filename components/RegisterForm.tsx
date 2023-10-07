@@ -1,5 +1,5 @@
 'use client'
-import React from 'react'
+import React, { useEffect } from 'react'
 import { Form, Formik } from 'formik'
 import InputText from './form/InputText'
 import InputSelect from './form/InputSelect'
@@ -9,6 +9,7 @@ import ValidationError from './form/ValidationError'
 import Link from 'next/link'
 import axiosInstance from '@/lib/AxiosInstance'
 import { useRouter } from 'next/navigation'
+import { getFromLocalStorage } from '@/lib/LocalStorageHandler'
 
 interface RegisterFormValues {
   firstName: string
@@ -19,7 +20,7 @@ interface RegisterFormValues {
 }
 
 const RegisterForm = () => {
-  const { push } = useRouter()
+  const router = useRouter()
   const initialValues: RegisterFormValues = {
     firstName: '',
     email: '',
@@ -50,6 +51,12 @@ const RegisterForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (getFromLocalStorage('accessToken') !== null) {
+      router.push('/home')
+    }
+  }, [router])
+
   return (
     <div className="flex justify-center items-center my-10">
       <div className="w-60 m-2">
@@ -59,7 +66,7 @@ const RegisterForm = () => {
           onSubmit={(values) => {
             axiosInstance.post('/api/v1/auth/register', values).then((res) => {
               if (res.data.success === true) {
-                push('/auth/login')
+                router.push('/auth/login')
               }
             })
           }}

@@ -1,9 +1,9 @@
 'use client'
+import withAuth from '@/lib/withAuth'
 import React from 'react'
 
-// TODO: test protected route
 const Home = () => {
-  return <div></div>
+  return <div>PROTECTED ROUTE</div>
 }
 
-export default Home
+export default withAuth(Home)
