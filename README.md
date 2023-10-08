@@ -7,6 +7,7 @@
 3. Run in the development mode: `npm run dev`
 
 ## Development
+
 0. Follow the "running for frontend development" instructions at https://github.com/hire-a-senior/backend to quickly run backend (with one docker command, you do not need any db installation)
 1. Fork the project. While forking, disable "Copy only main branch" option.
 2. Ensure that you configured your ssh keys with github: https://docs.github.com/en/authentication/connecting-to-github-with-ssh
