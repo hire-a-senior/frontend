@@ -9,16 +9,13 @@ import {
   saveToLocalStorage,
 } from '@/lib/LocalStorageHandler'
 import { useRouter } from 'next/navigation'
-import axiosInstance from '@/lib/AxiosInstance'
-
-interface LoginFormValues {
-  email: string
-  password: string
-}
+import authApi from '@/api/auth'
+import { AxiosResponse } from 'axios'
+import { ILoginFormValues } from '@/interfaces/auth'
 
 const LoginForm = () => {
   const router = useRouter()
-  const initialValues: LoginFormValues = {
+  const initialValues: ILoginFormValues = {
     email: '',
     password: '',
   }
@@ -35,24 +32,16 @@ const LoginForm = () => {
         <Formik
           initialValues={initialValues}
           onSubmit={(values) => {
-            axiosInstance
-              .post(
-                process.env.NEXT_PUBLIC_BACKEND_URL + '/api/v1/auth/login',
-                values
-              )
-              .then((res) => {
-                if (res.data.success === true) {
-                  saveToLocalStorage(
-                    'accessToken',
-                    res?.data?.data?.accessToken
-                  )
-                  saveToLocalStorage(
-                    'refreshToken',
-                    res?.data?.data?.refreshToken
-                  )
-                  router.push('/home')
-                }
-              })
+            authApi.login(values).then((res: AxiosResponse) => {
+              if (res.data.success === true) {
+                saveToLocalStorage('accessToken', res?.data?.data?.accessToken)
+                saveToLocalStorage(
+                  'refreshToken',
+                  res?.data?.data?.refreshToken
+                )
+                router.push('/home')
+              }
+            })
           }}
         >
           <div className="border border-purple-light p-4 rounded-md bg-white">
