@@ -7,21 +7,14 @@ import { object, string, ref } from 'yup'
 import PrimaryButton from './PrimaryButton'
 import ValidationError from './form/ValidationError'
 import Link from 'next/link'
-import axiosInstance from '@/lib/AxiosInstance'
 import { useRouter } from 'next/navigation'
 import { getFromLocalStorage } from '@/lib/LocalStorageHandler'
-
-interface RegisterFormValues {
-  firstName: string
-  email: string
-  title: string
-  password: string
-  confirmPassword: string
-}
+import authApi from '@/api/auth'
+import { IRegisterFormValues } from '@/interfaces/auth'
 
 const RegisterForm = () => {
   const router = useRouter()
-  const initialValues: RegisterFormValues = {
+  const initialValues: IRegisterFormValues = {
     firstName: '',
     email: '',
     title: 'JUNIOR',
@@ -64,7 +57,7 @@ const RegisterForm = () => {
           initialValues={initialValues}
           validationSchema={registerSchema}
           onSubmit={(values) => {
-            axiosInstance.post('/api/v1/auth/register', values).then((res) => {
+            authApi.register(values).then((res) => {
               if (res.data.success === true) {
                 router.push('/auth/login')
               }
