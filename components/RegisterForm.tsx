@@ -46,7 +46,7 @@ const RegisterForm = () => {
 
   useEffect(() => {
     if (getFromLocalStorage('accessToken') !== null) {
-      router.push('/home')
+      router.push('/app/home')
     }
   }, [router])
 
