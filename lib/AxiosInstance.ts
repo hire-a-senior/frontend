@@ -24,10 +24,17 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   (response) => {
-    console.log('response', response)
-    if (response?.data?.success === false && response?.data?.message) {
+    if (
+      response?.data?.success === false &&
+      response?.data?.message &&
+      response?.data?.showNotification === true
+    ) {
       toast.error(response?.data?.message)
-    } else if (response?.data?.success === true && response?.data?.message) {
+    } else if (
+      response?.data?.success === true &&
+      response?.data?.message &&
+      response?.data?.showNotification === true
+    ) {
       toast.success(response?.data?.message)
     }
     return response
