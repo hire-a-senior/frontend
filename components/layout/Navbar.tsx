@@ -36,7 +36,6 @@ const Navbar = () => {
             width={64}
             height={64}
           />
-          <p>Hire a Senior</p>
         </Link>
         <div className="flex justify-center items-center">
           <div className="mr-4">

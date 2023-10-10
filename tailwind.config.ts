@@ -16,6 +16,7 @@ const config: Config = {
           dark: '#4A2367',
         },
         magnolia: '#EDF4ED',
+        magnoliaDark: '#DEE1DE',
         error: '#9A2020',
         warning: '#D6A909',
       },
