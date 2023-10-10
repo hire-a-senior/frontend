@@ -22,7 +22,7 @@ const LoginForm = () => {
 
   useEffect(() => {
     if (getFromLocalStorage('accessToken') !== null) {
-      router.push('/home')
+      router.push('/app/home')
     }
   }, [router])
 
@@ -39,7 +39,7 @@ const LoginForm = () => {
                   'refreshToken',
                   res?.data?.data?.refreshToken
                 )
-                router.push('/home')
+                router.push('/app/home')
               }
             })
           }}
