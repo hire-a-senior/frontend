@@ -1,5 +1,7 @@
 # Frontend
 
+![DALL·E 2023-11-29 11 12 50 - A tech-themed banner image for _Hire A Senior_ - a software help application, featuring Spring Boot and PostgreSQL technologies  On the left, include ](https://github.com/hire-a-senior/frontend/assets/40024436/e206abae-f79d-4bf7-ad8f-646daae700c6)
+
 ## Running the application
 
 1. Download the code.
